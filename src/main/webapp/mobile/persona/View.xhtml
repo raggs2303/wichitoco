@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PersonaViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewPersonaTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PersonaListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PersonaViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{personaController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_consecutivo}"/>
+                            <h:outputText value="#{personaController.selected.consecutivo}" title="#{myBundle.ViewPersonaTitle_consecutivo}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_nombres}"/>
+                            <h:outputText value="#{personaController.selected.nombres}" title="#{myBundle.ViewPersonaTitle_nombres}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_apellidos}"/>
+                            <h:outputText value="#{personaController.selected.apellidos}" title="#{myBundle.ViewPersonaTitle_apellidos}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_cedula}"/>
+                            <h:outputText value="#{personaController.selected.cedula}" title="#{myBundle.ViewPersonaTitle_cedula}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_direccion}"/>
+                            <h:outputText value="#{personaController.selected.direccion}" title="#{myBundle.ViewPersonaTitle_direccion}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_telefono}"/>
+                            <h:outputText value="#{personaController.selected.telefono}" title="#{myBundle.ViewPersonaTitle_telefono}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_email}"/>
+                            <h:outputText value="#{personaController.selected.email}" title="#{myBundle.ViewPersonaTitle_email}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewPersonaLabel_tipo}"/>
+                            <h:outputText value="#{personaController.selected.tipo.consecutivo}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

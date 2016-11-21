@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="co.edu.ul_wichitoco_war_1.0-SNAPSHOTPU" transaction-type="JTA">
+        <jta-data-source>java:/jboss/datasources/MySQLDS</jta-data-source>
+        <class>co.edu.ul.wichitoco.entity.Compra</class>
+        <class>co.edu.ul.wichitoco.entity.CompraDetalle</class>
+        <class>co.edu.ul.wichitoco.entity.Movimiento</class>
+        <class>co.edu.ul.wichitoco.entity.Pedido</class>
+        <class>co.edu.ul.wichitoco.entity.PedidoDetalle</class>
+        <class>co.edu.ul.wichitoco.entity.Persona</class>
+        <class>co.edu.ul.wichitoco.entity.Producto</class>
+        <class>co.edu.ul.wichitoco.entity.TipoMovimiento</class>
+        <class>co.edu.ul.wichitoco.entity.TipoPersona</class>
+        <class>co.edu.ul.wichitoco.entity.Usuario</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties/>
+    </persistence-unit>
+</persistence>

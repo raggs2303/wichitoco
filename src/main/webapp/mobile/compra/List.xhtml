@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="CompraListPage">
+        <pm:header title="#{myBundle.ListCompraTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":CompraCreatePage:CompraCreateForm" actionListener="#{compraController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:CompraCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="CompraListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{compraController.items}"
+                             var="item"
+                             rowKey="#{item.consecutivo}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{compraController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{compraController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{compraController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('CompraListPage:CompraListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('CompraListPage:CompraListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('CompraListPage:CompraListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.consecutivo}" filterBy="#{item.consecutivo}" headerText="#{myBundle.ListCompraTitle_consecutivo}">
+                        <h:outputText value="#{item.consecutivo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}" headerText="#{myBundle.ListCompraTitle_codigo}">
+                        <h:outputText value="#{item.codigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.fecha}" filterBy="#{item.fecha}" headerText="#{myBundle.ListCompraTitle_fecha}">
+                        <h:outputText value="#{item.fecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.proveedor.consecutivo}" filterBy="#{item.proveedor.consecutivo}" headerText="#{myBundle.ListCompraTitle_proveedor}">
+                        <h:outputText value="#{item.proveedor.consecutivo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.usuario.nickname}" filterBy="#{item.usuario.nickname}" headerText="#{myBundle.ListCompraTitle_usuario}">
+                        <h:outputText value="#{item.usuario.nickname}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":CompraEditPage:CompraEditForm" disabled="#{empty compraController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:CompraEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{compraController.delete}" update=":growl,datalist" disabled="#{empty compraController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty compraController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.CompraHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.CompraMenuItem_proveedor}" icon="ui-icon-search" update=":PersonaEditPage:PersonaEditForm" disabled="#{empty compraController.selected.proveedor}" actionListener="#{compraController.prepareProveedor}" action="#{mobilePageController.navigateWithHistory}">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PersonaEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.CompraMenuItem_usuario}" icon="ui-icon-search" update=":UsuarioEditPage:UsuarioEditForm" disabled="#{empty compraController.selected.usuario}" actionListener="#{compraController.prepareUsuario}" action="#{mobilePageController.navigateWithHistory}">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:UsuarioEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.CompraMenuItem_compraDetalleList}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty compraController.selected.compraDetalleList}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{compraController.navigateCompraDetalleList()}"/>
+                        </p:menuitem>
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

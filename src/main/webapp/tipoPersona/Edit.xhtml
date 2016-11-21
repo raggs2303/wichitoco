@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="TipoPersonaEditDlg" widgetVar="TipoPersonaEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditTipoPersonaTitle}" closeOnEscape="true">
+
+            <h:form id="TipoPersonaEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{tipoPersonaController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditTipoPersonaLabel_consecutivo}" for="consecutivo" />
+                        <h:outputText id="consecutivo" value="#{tipoPersonaController.selected.consecutivo}" />
+
+                        <p:outputLabel value="#{myBundle.EditTipoPersonaLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{tipoPersonaController.selected.nombre}" title="#{myBundle.EditTipoPersonaTitle_nombre}" required="true" requiredMessage="#{myBundle.EditTipoPersonaRequiredMessage_nombre}" size="40" maxlength="40"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tipoPersonaController.save}" value="#{myBundle.Save}" update="display,:TipoPersonaListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('TipoPersonaEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('TipoPersonaEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

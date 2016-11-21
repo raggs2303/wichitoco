@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditPedidoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PedidoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{pedidoController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditPedidoLabel_consecutivo}" for="consecutivo" />
+                            <h:outputText id="consecutivo" value="#{pedidoController.selected.consecutivo}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_codigo}" for="codigo" />
+                            <p:inputText id="codigo" value="#{pedidoController.selected.codigo}" title="#{myBundle.EditPedidoTitle_codigo}" required="true" requiredMessage="#{myBundle.EditPedidoRequiredMessage_codigo}" size="50" maxlength="50"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoLabel_fecha}" for="fecha" />
+                            <p:calendar id="fecha" pattern="MM/dd/yyyy" value="#{pedidoController.selected.fecha}" title="#{myBundle.EditPedidoTitle_fecha}" required="true" requiredMessage="#{myBundle.EditPedidoRequiredMessage_fecha}" showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoLabel_cliente}" for="cliente" />
+                            <p:autoComplete id="cliente" dropdown="true" value="#{pedidoController.selected.cliente}"
+                                            cache="#{sesion.caching}" cacheTimeout="#{sesion.cacheTimeout}"
+                                            completeMethod="#{personaController.completeMethod}" forceSelection="true" size="45"
+                                            required="true" requiredMessage="#{myBundle.CreatePedidoRequiredMessage_cliente}"
+                                            var="obj" itemLabel="#{obj.toString()}" itemValue="#{obj}" converter="personaConverter"
+                                            panelStyle="width: 400px" scrollHeight="400" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoLabel_usuario}" for="usuario" />
+                            <p:autoComplete id="usuario" dropdown="true" value="#{pedidoController.selected.usuario}"
+                                            cache="#{sesion.caching}" cacheTimeout="#{sesion.cacheTimeout}"
+                                            completeMethod="#{usuarioController.completeMethod}" forceSelection="true" size="45"
+                                            required="true" requiredMessage="#{myBundle.CreatePedidoRequiredMessage_usuario}"
+                                            var="obj" itemLabel="#{obj.toString()}" itemValue="#{obj}" converter="usuarioConverter"
+                                            panelStyle="width: 400px" scrollHeight="400" />
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{pedidoController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:PedidoListPage:PedidoListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:PedidoListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

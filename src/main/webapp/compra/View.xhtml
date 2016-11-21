@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CompraViewDlg" widgetVar="CompraViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewCompraTitle}" closeOnEscape="true">
+
+            <h:form id="CompraViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{compraController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewCompraLabel_consecutivo}"/>
+                        <h:outputText value="#{compraController.selected.consecutivo}" title="#{myBundle.ViewCompraTitle_consecutivo}"/>
+
+                        <h:outputText value="#{myBundle.ViewCompraLabel_codigo}"/>
+                        <h:outputText value="#{compraController.selected.codigo}" title="#{myBundle.ViewCompraTitle_codigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewCompraLabel_fecha}"/>
+                        <h:outputText value="#{compraController.selected.fecha}" title="#{myBundle.ViewCompraTitle_fecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewCompraLabel_proveedor}"/>
+                        <h:outputText value="#{compraController.selected.proveedor.consecutivo}"/>
+
+                        <h:outputText value="#{myBundle.ViewCompraLabel_usuario}"/>
+                        <h:outputText value="#{compraController.selected.usuario.nickname}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('CompraViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

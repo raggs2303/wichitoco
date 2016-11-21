@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="CompraEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditCompraTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:CompraListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="CompraEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{compraController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditCompraLabel_consecutivo}" for="consecutivo" />
+                            <h:outputText id="consecutivo" value="#{compraController.selected.consecutivo}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditCompraLabel_codigo}" for="codigo" />
+                            <p:inputText id="codigo" value="#{compraController.selected.codigo}" title="#{myBundle.EditCompraTitle_codigo}" required="true" requiredMessage="#{myBundle.EditCompraRequiredMessage_codigo}" size="50" maxlength="50"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditCompraLabel_fecha}" for="fecha" />
+                            <p:calendar id="fecha" pattern="MM/dd/yyyy" value="#{compraController.selected.fecha}" title="#{myBundle.EditCompraTitle_fecha}" required="true" requiredMessage="#{myBundle.EditCompraRequiredMessage_fecha}" showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditCompraLabel_proveedor}" for="proveedor" />
+                            <p:autoComplete id="proveedor" dropdown="true" value="#{compraController.selected.proveedor}"
+                                            cache="#{sesion.caching}" cacheTimeout="#{sesion.cacheTimeout}"
+                                            completeMethod="#{personaController.completeMethod}" forceSelection="true" size="45"
+                                            required="true" requiredMessage="#{myBundle.CreateCompraRequiredMessage_proveedor}"
+                                            var="obj" itemLabel="#{obj.toString()}" itemValue="#{obj}" converter="personaConverter"
+                                            panelStyle="width: 400px" scrollHeight="400" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditCompraLabel_usuario}" for="usuario" />
+                            <p:autoComplete id="usuario" dropdown="true" value="#{compraController.selected.usuario}"
+                                            cache="#{sesion.caching}" cacheTimeout="#{sesion.cacheTimeout}"
+                                            completeMethod="#{usuarioController.completeMethod}" forceSelection="true" size="45"
+                                            required="true" requiredMessage="#{myBundle.CreateCompraRequiredMessage_usuario}"
+                                            var="obj" itemLabel="#{obj.toString()}" itemValue="#{obj}" converter="usuarioConverter"
+                                            panelStyle="width: 400px" scrollHeight="400" />
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{compraController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:CompraListPage:CompraListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:CompraListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

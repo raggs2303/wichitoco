@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <h:form id="menuForm">
+        <p:menu>
+            <p:submenu label="#{myBundle.Maintenance}">
+                <p:submenu label="Movimientos">
+                    <p:menuitem value="#{myBundle.CompraHeading}" outcome="/mobile/compra/index" />
+                    <p:menuitem value="#{myBundle.PedidoHeading}" outcome="/mobile/pedido/index" />
+                    <p:menuitem value="#{myBundle.ProductoHeading}" outcome="/mobile/producto/index" />
+                </p:submenu>
+                <p:submenu label="Administraci&oacute;n">
+                    <p:menuitem value="#{myBundle.PersonaHeading}" outcome="/mobile/persona/index" />
+                    <p:menuitem value="#{myBundle.UsuarioHeading}" outcome="/mobile/usuario/index" />
+                </p:submenu>
+                <p:submenu label="Parametrizaci&oacute;n"> 
+                    <p:menuitem value="#{myBundle.TipoPersonaHeading}" outcome="/mobile/tipoPersona/index" />
+                    <p:menuitem value="#{myBundle.TipoMovimientoHeading}" outcome="/mobile/tipoMovimiento/index" />
+                </p:submenu>
+            </p:submenu>
+            <p:menuitem value="#{myBundle.FullApp}" outcome="/index" icon="ui-icon-home"/>
+        </p:menu>
+    </h:form>
+</ui:composition>

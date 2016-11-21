@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoListPage">
+        <pm:header title="#{myBundle.ListPedidoTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":PedidoCreatePage:PedidoCreateForm" actionListener="#{pedidoController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:PedidoCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{pedidoController.items}"
+                             var="item"
+                             rowKey="#{item.consecutivo}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{pedidoController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('PedidoListPage:PedidoListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('PedidoListPage:PedidoListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('PedidoListPage:PedidoListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.consecutivo}" filterBy="#{item.consecutivo}" headerText="#{myBundle.ListPedidoTitle_consecutivo}">
+                        <h:outputText value="#{item.consecutivo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}" headerText="#{myBundle.ListPedidoTitle_codigo}">
+                        <h:outputText value="#{item.codigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.fecha}" filterBy="#{item.fecha}" headerText="#{myBundle.ListPedidoTitle_fecha}">
+                        <h:outputText value="#{item.fecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column sortBy="#{item.cliente.consecutivo}" filterBy="#{item.cliente.consecutivo}" headerText="#{myBundle.ListPedidoTitle_cliente}">
+                        <h:outputText value="#{item.cliente.consecutivo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.usuario.nickname}" filterBy="#{item.usuario.nickname}" headerText="#{myBundle.ListPedidoTitle_usuario}">
+                        <h:outputText value="#{item.usuario.nickname}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PedidoEditPage:PedidoEditForm" disabled="#{empty pedidoController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:PedidoEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{pedidoController.delete}" update=":growl,datalist" disabled="#{empty pedidoController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty pedidoController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.PedidoHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.PedidoMenuItem_cliente}" icon="ui-icon-search" update=":PersonaEditPage:PersonaEditForm" disabled="#{empty pedidoController.selected.cliente}" actionListener="#{pedidoController.prepareCliente}" action="#{mobilePageController.navigateWithHistory}">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PersonaEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PedidoMenuItem_usuario}" icon="ui-icon-search" update=":UsuarioEditPage:UsuarioEditForm" disabled="#{empty pedidoController.selected.usuario}" actionListener="#{pedidoController.prepareUsuario}" action="#{mobilePageController.navigateWithHistory}">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:UsuarioEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PedidoMenuItem_pedidoDetalleList}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty pedidoController.selected.pedidoDetalleList}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{pedidoController.navigatePedidoDetalleList()}"/>
+                        </p:menuitem>
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

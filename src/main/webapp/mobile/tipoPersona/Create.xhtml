@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="TipoPersonaCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateTipoPersonaTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:TipoPersonaListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="TipoPersonaCreateForm">
+
+                <h:panelGroup id="display" rendered="#{tipoPersonaController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateTipoPersonaLabel_nombre}" for="nombre" />
+                            <p:inputText id="nombre" value="#{tipoPersonaController.selected.nombre}" title="#{myBundle.CreateTipoPersonaTitle_nombre}" required="true" requiredMessage="#{myBundle.CreateTipoPersonaRequiredMessage_nombre}" size="40" maxlength="40"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{tipoPersonaController.saveNew}" value="#{myBundle.Save}" update="display,:TipoPersonaListPage:TipoPersonaListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:TipoPersonaListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>
